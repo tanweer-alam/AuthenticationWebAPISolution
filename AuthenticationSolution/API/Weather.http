@@ -4,3 +4,7 @@ GET {{API_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+POST {{API_HostAddress}}/weatherforecast?summary=Cloudy
+Accept: application/json
+
+###
