@@ -1,3 +1,4 @@
+using API.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
