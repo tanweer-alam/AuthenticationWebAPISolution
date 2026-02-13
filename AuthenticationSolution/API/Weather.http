@@ -4,7 +4,10 @@ GET {{API_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
-POST {{API_HostAddress}}/weatherforecast?summary=Cloudy
+POST {{API_HostAddress}}/weatherforecast
 Accept: application/json
-
+Content-Type: application/json
+{
+  "summary": "Sunny"
+}
 ###

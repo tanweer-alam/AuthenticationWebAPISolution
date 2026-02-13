@@ -30,10 +30,10 @@ namespace API.Controllers
             .ToArray();
         }
         [HttpPost]
-        public ActionResult<WeatherForecast> Post(string summary)
+        public ActionResult<CreateWeatherRequest> Post(CreateWeatherRequest request)
         {
-            Summaries.Add(summary);
-            return Ok(summary);
+            Summaries.Add(request.Summary);
+            return Ok(request);
         }
     }
 }
