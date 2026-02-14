@@ -1,0 +1,13 @@
+# For more info on HTTP files go to https://aka.ms/vs/httpfile
+@API_HostAddress = http://localhost:5258
+
+POST {{API_HostAddress}}/api/user/register
+Accept: application/json
+Content-Type: application/json
+
+
+###
+
+POST {{API_HostAddress}}/api/user/login
+Accept: application/json
+Content-Type: application/json
