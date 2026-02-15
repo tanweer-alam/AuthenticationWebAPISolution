@@ -20,7 +20,7 @@ namespace API.Api
             _logger = logger;
         }
 
-        [Authorize(AuthenticationSchemes = "BasicAuthentication")]
+        [Authorize(AuthenticationSchemes = "BasicAuthentication", Roles = "User")]
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
