@@ -1,4 +1,4 @@
-namespace API
+namespace API.DTOs
 {
     public class WeatherForecast
     {
@@ -10,4 +10,5 @@ namespace API
 
         public string? Summary { get; set; }
     }
+    public record CreateWeatherRequest(string Summary);
 }
