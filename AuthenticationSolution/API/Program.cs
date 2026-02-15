@@ -9,9 +9,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 #region Service Registration / DI container
+
 builder.Services.AddDbContext<UserDbContext>(optionsBuilder =>
 optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
+
+builder.Services.AddAuthentication("BasicAuthentication")
+    .AddScheme<Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions, API.AuthSchemes.BasicAuthenticationHandler>("BasicAuthentication", null);
 #endregion
 
 var app = builder.Build();
