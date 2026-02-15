@@ -1,4 +1,5 @@
 using API.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,8 @@ optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("DefaultCo
 
 builder.Services.AddAuthentication("BasicAuthentication")
     .AddScheme<Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions, API.AuthSchemes.BasicAuthenticationHandler>("BasicAuthentication", null);
+builder.Services.AddAuthorization();
+builder.Services.AddSingleton<IAuthorizationHandler, API.Authorization.HierarchicalRolesAuthorizationHandler>();
 #endregion
 
 var app = builder.Build();
@@ -29,6 +32,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
