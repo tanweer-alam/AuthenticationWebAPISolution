@@ -1,4 +1,5 @@
 using API.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Api
@@ -19,6 +20,9 @@ namespace API.Api
             _logger = logger;
         }
 
+        [Authorize(AuthenticationSchemes = "BasicAuthentication", Roles = "User,Admin")]
+        //Role-based Authorization
+        //user must contain same role, no heirchy
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
