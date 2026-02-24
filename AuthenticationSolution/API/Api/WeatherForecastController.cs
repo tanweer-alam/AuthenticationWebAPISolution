@@ -20,8 +20,8 @@ namespace API.Api
             _logger = logger;
         }
 
-        [Authorize(AuthenticationSchemes = "BasicAuthentication", Roles = "User,Admin")]
-        //Role-based Authorization
+        [Authorize(AuthenticationSchemes = "BasicAuthentication", Policy = "AdminPolicy")]
+        //Role-based Authorization Roles = "User, Admin"
         //user must contain same role, no heirchy
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()

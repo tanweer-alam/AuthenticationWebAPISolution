@@ -1,5 +1,6 @@
 using API.Data;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,8 +18,15 @@ optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("DefaultCo
 
 builder.Services.AddAuthentication("BasicAuthentication")
     .AddScheme<Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions, API.AuthSchemes.BasicAuthenticationHandler>("BasicAuthentication", null);
-builder.Services.AddAuthorization();
 builder.Services.AddSingleton<IAuthorizationHandler, API.Authorization.HierarchicalRolesAuthorizationHandler>();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminPolicy", policy =>
+    {
+        policy.Requirements.Add(new RolesAuthorizationRequirement(new[] { "Admin" , "User" }));
+    });
+});
 #endregion
 
 var app = builder.Build();
