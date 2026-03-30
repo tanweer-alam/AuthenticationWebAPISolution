@@ -26,6 +26,7 @@ namespace API.AuthSchemes
         {
             try
             {
+                //header validation
                 if (!Request.Headers.ContainsKey("Authorization"))
                 {
                     return AuthenticateResult.Fail("Missing Authorization Header");
@@ -39,6 +40,7 @@ namespace API.AuthSchemes
                 {
                     return AuthenticateResult.Fail("Invalid Authorization Scheme");
                 }
+                //extract credentials
                 var credentialsBytes = Convert.FromBase64String(headerValue.Parameter);
                 var credentials = System.Text.Encoding.UTF8.GetString(credentialsBytes).Split(':', 2);
                 if (credentials.Length != 2)
@@ -48,13 +50,15 @@ namespace API.AuthSchemes
 
                 var email = credentials[0];
                 var password = credentials[1];
-                
+
+                //validate credentials
                 var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == email);
                 if(user == null || !PasswordHasher.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
                 {
                     return AuthenticateResult.Fail("Invalid Email or Password");
                 }
 
+                //set claims
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
