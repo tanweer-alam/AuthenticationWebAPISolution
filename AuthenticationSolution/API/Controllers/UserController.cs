@@ -18,7 +18,7 @@ public class UserController : Controller
     public async Task<IActionResult> Index()
     {
         var users = await _dbContext.Users
-            .AsNoTracking()
+            .AsNoTracking()   
             .Select(u => new UserListItemViewModel
             {
                 Id = u.Id,

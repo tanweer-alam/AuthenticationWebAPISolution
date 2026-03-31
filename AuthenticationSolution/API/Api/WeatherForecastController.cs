@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Api
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly List<string> Summaries = new List<string>
@@ -20,7 +20,7 @@ namespace API.Api
             _logger = logger;
         }
 
-        [Authorize(AuthenticationSchemes = "BasicAuthentication", Policy = "AdminPolicy")]
+        //[Authorize(Policy = "AdminPolicy")]
         //Role-based Authorization Roles = "User, Admin"
         //user must contain same role, no heirchy
         [HttpGet(Name = "GetWeatherForecast")]
