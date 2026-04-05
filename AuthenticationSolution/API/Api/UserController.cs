@@ -13,9 +13,11 @@ namespace API.Api
     public class UserController : ControllerBase
     {
         private readonly UserDbContext _dbContext;
-        public UserController(UserDbContext dbContext)
+        private readonly IUserService _userService;
+        public UserController(UserDbContext dbContext, IUserService userService)
         {
             _dbContext = dbContext;
+            _userService = userService;
         }
 
         //registration: POST api/user/register
@@ -32,18 +34,8 @@ namespace API.Api
             {
                 return BadRequest("Email already in use");
             }
-            //compute password
-            PasswordHasher.CreatePasswordHash(model.Password, out byte[] passwordHash, out byte[] saltHash);
-            var user = new User
-            {
-                Email = model.Email,
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                PasswordHash = passwordHash,
-                PasswordSalt = saltHash
-            };
-            _dbContext.Users.Add(user);
-            _dbContext.SaveChanges();
+            var user = await _userService.RegisterUserAsync(model);
+
             return Ok(new {user.FirstName, user.LastName, user.Email});
         }
 
@@ -60,11 +52,13 @@ namespace API.Api
             {
                 return Unauthorized("Invalid email");
             }
-            if(!PasswordHasher.VerifyPasswordHash(model.Password, user.PasswordHash, user.PasswordSalt))
+            string ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "Unknown";
+            var result = await _userService.AuthenticateUserAsync(model, user, ipAddress);
+            if (result == null)
             {
                 return Unauthorized("Incorrect password");
             }
-            return Ok(new {Message = "Login successfull"});
+            return Ok(result);
         }
     }
 }

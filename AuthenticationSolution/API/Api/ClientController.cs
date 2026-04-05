@@ -1,6 +1,7 @@
 ﻿using API.Data;
 using API.DTOs;
 using API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,7 @@ namespace API.Api
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IEnumerable<ClientDto>> Get()
         {
             return await _userDbContext.Clients.AsNoTracking()
