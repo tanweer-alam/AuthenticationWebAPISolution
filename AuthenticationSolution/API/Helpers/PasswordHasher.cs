@@ -19,9 +19,9 @@ namespace API.Helpers
         {
             using (var hmac = new HMACSHA512(storedSaltHash))
             {
-                var encodedPass = Encoding.UTF8.GetBytes(password);
-                var computedPass = hmac.ComputeHash(encodedPass);
-                return computedPass.SequenceEqual(storedPasswordHash);
+                var userPassword = Encoding.UTF8.GetBytes(password);
+                var computedPassword = hmac.ComputeHash(userPassword);
+                return computedPassword.SequenceEqual(storedPasswordHash);
             }
         }
     }
